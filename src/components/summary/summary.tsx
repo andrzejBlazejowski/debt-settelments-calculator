@@ -15,7 +15,11 @@ function Summary(props: any) {
           <h3>30-10-2020</h3>
         </div>
         <div className="p-col-2">
-          <Button label="show details" icon="pi pi-angle-double-down" />
+          <Button
+            label="show details"
+            icon="pi pi-angle-double-down"
+            onClick={props.toggleDetails}
+          />
         </div>
       </div>
     </Panel>

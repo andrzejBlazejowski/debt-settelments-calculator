@@ -1,9 +1,16 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import { Calendar } from "primereact/calendar";
 import { Panel } from "primereact/panel";
 import { InputText } from "primereact/inputtext";
 
-function Provision(props: any) {
+function Provision(props: {
+  startDate: Date;
+  endDate: Date;
+  debt: number;
+  costs: number;
+  interests: number;
+  panelStyle: CSSProperties;
+}) {
   return (
     <Panel
       style={props.panelStyle}
@@ -47,19 +54,31 @@ function Provision(props: any) {
           <div className="p-col-6">
             <div className="p-inputgroup">
               <span className="p-inputgroup-addon">$</span>
-              <InputText keyfilter="num" placeholder="Operational Costs" />
+              <InputText
+                keyfilter="num"
+                value={props.costs}
+                placeholder="Operational Costs"
+              />
             </div>
           </div>
           <div className="p-col-6">
             <div className="p-inputgroup">
               <span className="p-inputgroup-addon">$</span>
-              <InputText keyfilter="num" placeholder="initial debt " />
+              <InputText
+                keyfilter="num"
+                value={props.debt}
+                placeholder="initial debt "
+              />
             </div>
           </div>
           <div className="p-col-6">
             <div className="p-inputgroup">
               <span className="p-inputgroup-addon">%</span>
-              <InputText keyfilter="num" placeholder="interest" />
+              <InputText
+                keyfilter="num"
+                value={props.interests}
+                placeholder="interest"
+              />
             </div>
           </div>
         </div>
