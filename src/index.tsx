@@ -5,7 +5,6 @@ import { createStore } from "redux";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-// import { create } from "domain";
 import debtSettlements from "./store/reducer";
 
 const store = createStore(debtSettlements);

@@ -6,48 +6,19 @@ import Summary from "./components/summary/summary";
 import Details from "./components/details/details";
 import {
   addPayment,
-  editPayment,
+  // editPayment,
+  // removePayment,
+  editNewPayment,
   editProvisionData,
-  removePayment,
   toggleDetails
 } from "./store/actions";
+import { IProvision, IPayment } from "./store/interfaces";
 
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "primereact/resources/themes/luna-amber/theme.css";
 import "./../node_modules/primeflex/primeflex.css";
 import "./App.css";
-
-// const props = {
-//   payments: [
-//     {
-//       date: new Date().toLocaleDateString("pl-PL", {
-//         day: "numeric",
-//         month: "numeric",
-//         year: "numeric"
-//       }),
-//       amount: 12.34
-//     },
-//     {
-//       date: new Date().toLocaleDateString("pl-PL", {
-//         day: "numeric",
-//         month: "numeric",
-//         year: "numeric"
-//       }),
-//       amount: 12.34
-//     }
-//   ],
-//   provisionData: {
-//     startDate: new Date(),
-//     endDate: new Date(),
-//     debt: 100,
-//     interests: 2,
-//     operationalCosts: 20
-//   },
-//   controlData: {
-//     showDetails: true
-//   }
-// };
 
 function App(props: any) {
   const rootStyle = { width: "100%" };
@@ -85,13 +56,16 @@ function App(props: any) {
         debt={props.provisionData.debt}
         costs={props.provisionData.operationalCosts}
         interests={props.provisionData.interests}
+        onChange={props.editProvision}
         panelStyle={panelStyle}
       />
 
       <Payments
         payments={props.payments}
-        date={new Date()}
+        newPayment={props.newPayment}
         panelStyle={panelStyle}
+        addPayment={props.addPayment}
+        onNewChange={props.editNewPayment}
       />
 
       <Summary panelStyle={panelStyle} toggleDetails={props.toggleDetails} />
@@ -104,7 +78,11 @@ function App(props: any) {
 }
 
 const mapDispatchToProps = (dispatch: (...args: any[]) => void) => ({
-  toggleDetails: () => dispatch(toggleDetails())
+  toggleDetails: () => dispatch(toggleDetails()),
+  editProvision: (provision: IProvision) =>
+    dispatch(editProvisionData(provision)),
+  addPayment: (payment: IPayment) => dispatch(addPayment(payment)),
+  editNewPayment: (payment: IPayment) => dispatch(editNewPayment(payment))
 });
 
 const mapStateToProps = (state: any) => ({
@@ -113,5 +91,4 @@ const mapStateToProps = (state: any) => ({
   provisionData: { ...state.provisionData },
   controlData: { ...state.controlData }
 });
-
 export default connect(mapStateToProps, mapDispatchToProps)(App);

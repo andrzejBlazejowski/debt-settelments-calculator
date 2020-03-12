@@ -1,27 +1,55 @@
+import { IPayment, IProvision } from "./interfaces";
+
 export const ADD_PAYMENT = "ADD_PAYMENT";
 export const REMOVE_PAYMENT = "REMOVE_PAYMENT";
 export const EDIT_PAYMENT = "EDIT_PAYMENT";
+
+export const EDIT_NEW_PAYMENT = "EDIT_NEW_PAYMENT";
+
 export const TOGGLE_DETAILS = "TOGGLE_DETAILS";
+
 export const EDIT_PROVISIONS_DATA = "EDIT_PROVISIONS_DATA";
 
-export function addPayment(payment: any) {
+export function addPayment(payment: IPayment) {
   return {
     type: ADD_PAYMENT,
-    payload: payment
+    payment: payment
   };
 }
 
-export function removePayment(paymentId: any) {
+export function removePayment(paymentId: string) {
   return {
     type: REMOVE_PAYMENT,
-    payload: paymentId
+    id: paymentId
   };
 }
 
-export function editPayment(payment: any) {
+export function editPayment(payment: IPayment) {
   return {
     type: EDIT_PAYMENT,
-    payload: payment
+    payment: payment
+  };
+}
+
+export function editNewPayment(payment: IPayment) {
+  return {
+    type: EDIT_NEW_PAYMENT,
+    payment: payment
+  };
+}
+
+export function clearNewPayment() {
+  return {
+    type: EDIT_NEW_PAYMENT,
+    payment: {
+      id: "",
+      date: new Date().toLocaleDateString("pl-PL", {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric"
+      }),
+      amount: 0
+    }
   };
 }
 
@@ -31,9 +59,9 @@ export function toggleDetails() {
   };
 }
 
-export function editProvisionData(provision: any) {
+export function editProvisionData(provision: IProvision) {
   return {
     type: TOGGLE_DETAILS,
-    payload: provision
+    provision: provision
   };
 }
