@@ -61,7 +61,7 @@ export function toggleDetails() {
 
 export function editProvisionData(provision: IProvision) {
   return {
-    type: TOGGLE_DETAILS,
+    type: EDIT_PROVISIONS_DATA,
     provision: provision
   };
 }

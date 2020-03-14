@@ -7,9 +7,9 @@ import { IProvision } from "../../store/interfaces";
 interface Props {
   startDate: Date;
   endDate: Date;
-  debt: number;
-  costs: number;
-  interests: number;
+  debt: string;
+  costs: string;
+  interests: string;
   panelStyle: CSSProperties;
   onChange: (provision: IProvision) => void;
 }
@@ -37,7 +37,20 @@ const Provision: React.FC<Props> = props => {
       case ProvisionName.interests:
       case ProvisionName.operationalCosts: {
         let value = target instanceof HTMLInputElement ? target.value : "0";
-        provision[name] = parseFloat(value) as number;
+        const floatRegexp = new RegExp(
+          "^[0-9]{1,10}([.,]){0,1}([0-9]{1,2}){0,1}$",
+          "g"
+        );
+        if (value.length === 0) {
+          value = "0";
+        } else {
+          while (value[0] === "0") {
+            value = value.slice(1);
+          }
+        }
+        if (floatRegexp.test(value)) {
+          provision[name] = value;
+        }
         break;
       }
     }
@@ -81,7 +94,6 @@ const Provision: React.FC<Props> = props => {
             <div className="p-inputgroup">
               <span className="p-inputgroup-addon">$</span>
               <InputText
-                keyfilter="num"
                 value={props.costs}
                 placeholder="Operational Costs"
                 onChange={e => {
@@ -98,7 +110,6 @@ const Provision: React.FC<Props> = props => {
             <div className="p-inputgroup">
               <span className="p-inputgroup-addon">$</span>
               <InputText
-                keyfilter="num"
                 value={props.debt}
                 placeholder="initial debt "
                 onChange={e => {
@@ -112,7 +123,6 @@ const Provision: React.FC<Props> = props => {
             <div className="p-inputgroup">
               <span className="p-inputgroup-addon">%</span>
               <InputText
-                keyfilter="num"
                 value={props.interests}
                 placeholder="interest"
                 onChange={e => {

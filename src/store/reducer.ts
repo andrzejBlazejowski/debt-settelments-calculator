@@ -9,32 +9,21 @@ import {
 import { IPayment, IProvision, IAppState } from "./interfaces";
 
 const initialState: IAppState = {
-  payments: [
-    {
-      id: "asdasd2134gdfg",
-      date: new Date(),
-      amount: 12.34
-    },
-    {
-      id: "asd34tnvfxfgd89",
-      date: new Date(),
-      amount: 12.34
-    }
-  ],
+  payments: [],
   newPayment: {
     id: "",
     date: new Date(),
-    amount: 0
+    amount: "0"
   },
   provisionData: {
-    startDate: new Date(),
+    startDate: new Date("03/09/2020"),
     endDate: new Date(),
-    debt: 100,
-    interests: 2,
-    operationalCosts: 20
+    debt: "0",
+    interests: "0",
+    operationalCosts: "0"
   },
   controlData: {
-    showDetails: true
+    showDetails: false
   }
 };
 
@@ -81,7 +70,7 @@ function debtSettlements(
         controlData: { ...state.controlData },
         newPayment: {
           date: new Date(),
-          amount: 0
+          amount: "0"
         }
       };
     }

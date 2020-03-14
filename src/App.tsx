@@ -7,7 +7,7 @@ import Details from "./components/details/details";
 import {
   addPayment,
   // editPayment,
-  // removePayment,
+  removePayment,
   editNewPayment,
   editProvisionData,
   toggleDetails
@@ -66,6 +66,7 @@ function App(props: any) {
         panelStyle={panelStyle}
         addPayment={props.addPayment}
         onNewChange={props.editNewPayment}
+        removePayment={props.removePayment}
       />
 
       <Summary panelStyle={panelStyle} toggleDetails={props.toggleDetails} />
@@ -82,7 +83,8 @@ const mapDispatchToProps = (dispatch: (...args: any[]) => void) => ({
   editProvision: (provision: IProvision) =>
     dispatch(editProvisionData(provision)),
   addPayment: (payment: IPayment) => dispatch(addPayment(payment)),
-  editNewPayment: (payment: IPayment) => dispatch(editNewPayment(payment))
+  editNewPayment: (payment: IPayment) => dispatch(editNewPayment(payment)),
+  removePayment: (id: string) => dispatch(removePayment(id))
 });
 
 const mapStateToProps = (state: any) => ({
@@ -91,4 +93,5 @@ const mapStateToProps = (state: any) => ({
   provisionData: { ...state.provisionData },
   controlData: { ...state.controlData }
 });
+
 export default connect(mapStateToProps, mapDispatchToProps)(App);

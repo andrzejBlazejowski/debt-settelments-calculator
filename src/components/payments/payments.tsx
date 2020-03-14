@@ -12,23 +12,49 @@ interface Props {
   newPayment: IPayment;
   panelStyle: CSSProperties;
   addPayment: (provision: IPayment) => void;
+  removePayment: (id: string) => void;
   onNewChange: (provision: IPayment) => void;
 }
 
-function paymentControlsTemplate() {
-  return (
-    <div className="p-grid">
-      <div className="p-col-6">
-        <Button icon="pi pi-trash" />
-      </div>
-      {/* <div className="p-col-6">
-        <Button icon="pi pi-pencil" />
-      </div> */}
-    </div>
-  );
-}
-
 const Payments: React.FC<Props> = props => {
+  function paymentControlsTemplate(rowData: IPayment) {
+    return (
+      <div className="p-grid">
+        <div className="p-col-6">
+          <Button
+            onClick={e => {
+              const id = typeof rowData.id === "string" ? rowData.id : "";
+              props.removePayment(id);
+            }}
+            icon="pi pi-trash"
+          />
+        </div>
+        {/* <div className="p-col-6">
+          <Button icon="pi pi-pencil" />
+        </div> */}
+      </div>
+    );
+  }
+
+  type OnChange = (target: HTMLInputElement | Date) => void;
+  const onChange: OnChange = target => {
+    let value = target instanceof HTMLInputElement ? target.value : "0";
+    const floatRegexp = new RegExp(
+      "^[0-9]{1,10}([.,]){0,1}([0-9]{1,2}){0,1}$",
+      "g"
+    );
+    if (value.length === 0) {
+      value = "0";
+    } else {
+      while (value[0] === "0") {
+        value = value.slice(1);
+      }
+    }
+    if (floatRegexp.test(value)) {
+      props.onNewChange({ amount: value });
+    }
+  };
+
   props.payments.map(payment => {
     if (payment.date instanceof Date) {
       payment.dateString = payment.date.toLocaleDateString("pl-PL", {
@@ -75,12 +101,10 @@ const Payments: React.FC<Props> = props => {
           <div className="p-inputgroup">
             <span className="p-inputgroup-addon">$</span>
             <InputText
-              keyfilter="num"
               placeholder="payment amount"
               value={props.newPayment.amount}
               onChange={(e: SyntheticEvent) => {
-                let { value } = e.target as HTMLInputElement;
-                props.onNewChange({ amount: parseFloat(value) });
+                onChange(e.target as HTMLInputElement);
               }}
             />
           </div>

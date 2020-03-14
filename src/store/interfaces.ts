@@ -1,16 +1,16 @@
 export interface IPayment {
   id?: string;
   date?: Date;
-  amount?: number;
+  amount?: string;
   dateString?: string;
 }
 
 export interface IProvision {
   startDate?: Date;
   endDate?: Date;
-  debt?: number;
-  interests?: number;
-  operationalCosts?: number;
+  debt?: string;
+  interests?: string;
+  operationalCosts?: string;
 }
 
 export interface IAppState {
