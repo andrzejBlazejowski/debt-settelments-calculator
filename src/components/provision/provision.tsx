@@ -27,10 +27,20 @@ type OnChange = (name: ProvisionName, target: HTMLInputElement | Date) => void;
 const Provision: React.FC<Props> = props => {
   const onChange: OnChange = (name, target) => {
     let provision: IProvision = {};
+    let date: Date;
+    let minutesSeconds: number = 59;
+    let hours: number = 23;
     switch (name) {
-      case ProvisionName.endDate:
+      case ProvisionName.endDate: {
+        minutesSeconds = 0;
+        hours = 0;
+      }
       case ProvisionName.startDate: {
-        provision[name] = target instanceof Date ? target : new Date();
+        date = target instanceof Date ? target : new Date();
+        date.setSeconds(minutesSeconds);
+        date.setMinutes(minutesSeconds);
+        date.setHours(hours);
+        provision[name] = date;
         break;
       }
       case ProvisionName.debt:
@@ -64,9 +74,10 @@ const Provision: React.FC<Props> = props => {
       header="judge provisions"
     >
       <div className="p-grid">
-        <div className="content-section p-col-3">
+        <div className="content-section p-col-12 p-md-6 p-lg-3">
           <h5>Date of interest start</h5>
           <Calendar
+            touchUI={true}
             value={props.startDate}
             onChange={e => {
               onChange(ProvisionName.startDate, e.value as Date);
@@ -77,9 +88,10 @@ const Provision: React.FC<Props> = props => {
             yearRange="2000:2030"
           />
         </div>
-        <div className="content-section p-col-3">
+        <div className="content-section p-col-12 p-md-6 p-lg-3">
           <h5>calculate to date</h5>
           <Calendar
+            touchUI={true}
             value={props.endDate}
             onChange={e => {
               onChange(ProvisionName.endDate, e.value as Date);
@@ -88,8 +100,8 @@ const Provision: React.FC<Props> = props => {
             showButtonBar={true}
           />
         </div>
-        <div className="p-col-6 p-grid">
-          <div className="p-col-6">
+        <div className="p-col-12 p-lg-6 p-grid">
+          <div className="p-col-12 p-md-6">
             <h5>Operational Costs</h5>
             <div className="p-inputgroup">
               <span className="p-inputgroup-addon">$</span>
@@ -105,7 +117,7 @@ const Provision: React.FC<Props> = props => {
               />
             </div>
           </div>
-          <div className="p-col-6">
+          <div className="p-col-12 p-md-6">
             <h5>initial debt</h5>
             <div className="p-inputgroup">
               <span className="p-inputgroup-addon">$</span>
@@ -118,7 +130,7 @@ const Provision: React.FC<Props> = props => {
               />
             </div>
           </div>
-          <div className="p-col-6">
+          <div className="p-col-12 p-md-6">
             <h5>interests</h5>
             <div className="p-inputgroup">
               <span className="p-inputgroup-addon">%</span>

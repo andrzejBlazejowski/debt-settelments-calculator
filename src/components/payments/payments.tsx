@@ -73,14 +73,7 @@ const Payments: React.FC<Props> = props => {
       header="debtor's payments"
     >
       <div className="p-grid p-align-end vertical-container">
-        <div className="p-col-12">
-          <DataTable value={props.payments}>
-            <Column field="dateString" header="date of payment" />
-            <Column field="amount" header="amount of payment" />
-            <Column body={paymentControlsTemplate} />
-          </DataTable>
-        </div>
-        <div className="p-col-3">
+        <div className="p-col-12 p-md-6 p-lg-3">
           <h3>Date of payment</h3>
           <Calendar
             value={props.newPayment.date}
@@ -97,7 +90,7 @@ const Payments: React.FC<Props> = props => {
             yearRange="2000:2030"
           />
         </div>
-        <div className="p-col-3">
+        <div className="p-col-12 p-md-6 p-lg-3">
           <div className="p-inputgroup">
             <span className="p-inputgroup-addon">$</span>
             <InputText
@@ -117,6 +110,15 @@ const Payments: React.FC<Props> = props => {
             }}
           />
         </div>
+        {props.payments.length !== 0 && (
+          <div className="p-col-12">
+            <DataTable value={props.payments}>
+              <Column field="dateString" header="date" />
+              <Column field="amount" header="amount" />
+              <Column body={paymentControlsTemplate} />
+            </DataTable>
+          </div>
+        )}
       </div>
     </Panel>
   );

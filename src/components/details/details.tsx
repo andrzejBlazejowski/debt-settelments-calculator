@@ -12,7 +12,7 @@ function Provision(props: any) {
     >
       <div className="p-grid p-align-end vertical-container">
         <div className="p-col-12">
-          <DataTable value={props.summary}>
+          <DataTable value={props.summary} responsive={true}>
             <Column field="date" header="date" />
             <Column field="debt" header="debt" />
             <Column field="costs" header="costs" />

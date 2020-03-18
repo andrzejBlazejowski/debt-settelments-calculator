@@ -9,18 +9,29 @@ import {
 import { IPayment, IProvision, IAppState } from "./interfaces";
 
 const initialState: IAppState = {
-  payments: [],
+  payments: [
+    {
+      id: "asdasd345456",
+      date: new Date("03/03/2020"),
+      amount: "20"
+    },
+    {
+      id: "ghjhjg67567",
+      date: new Date("03/15/2020"),
+      amount: "20"
+    }
+  ],
   newPayment: {
     id: "",
     date: new Date(),
     amount: "0"
   },
   provisionData: {
-    startDate: new Date("03/09/2020"),
-    endDate: new Date(),
-    debt: "0",
-    interests: "0",
-    operationalCosts: "0"
+    startDate: new Date("03/01/2020"),
+    endDate: new Date("03/31/2020"),
+    debt: "100",
+    interests: "10",
+    operationalCosts: "20"
   },
   controlData: {
     showDetails: false

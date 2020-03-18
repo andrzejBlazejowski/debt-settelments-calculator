@@ -13,6 +13,7 @@ import {
   toggleDetails
 } from "./store/actions";
 import { IProvision, IPayment } from "./store/interfaces";
+import { debt } from "./utils/debtSettelments";
 
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
@@ -48,6 +49,13 @@ function App(props: any) {
     }
   ];
 
+  const summaryCalculator = new debt({
+    startDate: props.provisionData.startDate,
+    debt: props.provisionData.debt,
+    interestsRate: props.provisionData.interests,
+    operationalCosts: props.provisionData.operationalCosts,
+    payments: props.payments
+  });
   return (
     <div style={rootStyle} className="content-section p-grid p-justify-center">
       <Provision
@@ -69,7 +77,11 @@ function App(props: any) {
         removePayment={props.removePayment}
       />
 
-      <Summary panelStyle={panelStyle} toggleDetails={props.toggleDetails} />
+      <Summary
+        panelStyle={panelStyle}
+        toggleDetails={props.toggleDetails}
+        data={summaryCalculator.getDebt4Date(props.provisionData.endDate)}
+      />
 
       {props.controlData.showDetails && (
         <Details summary={summary} panelStyle={panelStyle} />
