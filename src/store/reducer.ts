@@ -7,6 +7,7 @@ import {
   EDIT_NEW_PAYMENT
 } from "./actions";
 import { IPayment, IProvision, IAppState } from "./interfaces";
+import { getUniquePaymentId } from "./../utils/idGenerator";
 
 const initialState: IAppState = {
   payments: [
@@ -21,13 +22,14 @@ const initialState: IAppState = {
       amount: "20"
     }
   ],
+  debts: [],
   newPayment: {
     id: "",
     date: new Date(),
     amount: "0"
   },
   provisionData: {
-    startDate: new Date("03/01/2020"),
+    startDate: new Date("03/01/2019"),
     endDate: new Date("03/31/2020"),
     debt: "100",
     interests: "10",
@@ -35,26 +37,6 @@ const initialState: IAppState = {
   },
   controlData: {
     showDetails: false
-  }
-};
-
-const getUniquePaymentId = (payments: IPayment[]): string => {
-  let result = "";
-  let idUnique = true;
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  const charactersLength = characters.length;
-  for (let i = 0; i < 25; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-
-  payments.forEach(payment => {
-    if (payment.id === result) idUnique = false;
-  });
-  if (idUnique) {
-    return result;
-  } else {
-    return getUniquePaymentId(payments);
   }
 };
 
@@ -76,6 +58,7 @@ function debtSettlements(
       }
       nextPayment.id = id;
       return {
+        debts: [...state.debts],
         payments: [...state.payments, nextPayment],
         provisionData: { ...state.provisionData },
         controlData: { ...state.controlData },
@@ -87,6 +70,7 @@ function debtSettlements(
     }
     case REMOVE_PAYMENT: {
       return {
+        debts: [...state.debts],
         payments: [
           ...state.payments.filter(payment => payment.id !== action.id)
         ],
@@ -101,6 +85,7 @@ function debtSettlements(
         nextPayment = action.payment;
       }
       return {
+        debts: [...state.debts],
         payments: [
           ...state.payments.filter(payment =>
             payment.id !== nextPayment.id
@@ -119,6 +104,7 @@ function debtSettlements(
         nextPayment = action.payment;
       }
       return {
+        debts: [...state.debts],
         payments: [...state.payments],
         provisionData: { ...state.provisionData },
         controlData: { ...state.controlData },
@@ -127,6 +113,7 @@ function debtSettlements(
     }
     case TOGGLE_DETAILS: {
       return {
+        debts: [...state.debts],
         payments: [...state.payments],
         provisionData: { ...state.provisionData },
         controlData: {
@@ -138,6 +125,7 @@ function debtSettlements(
     }
     case EDIT_PROVISIONS_DATA: {
       return {
+        debts: [...state.debts],
         payments: [...state.payments],
         provisionData: { ...state.provisionData, ...action.provision },
         controlData: { ...state.controlData },

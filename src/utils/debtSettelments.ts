@@ -30,23 +30,21 @@ export class debt {
           return b.date.getTime() - a.date.getTime();
         })
       : [];
-    console.log(this.payments);
   }
 
   getInterests4DayExcludesPayments = (
     endDate: Date,
     startDate = this.startDate
   ) => {
-    console.log(endDate, startDate);
     const startYear: number = this.startDate.getFullYear();
     const endYear: number = endDate.getFullYear();
     let interests: number = 0;
 
     if (startYear !== endYear) {
       interests = this.debt * (endYear - startYear) * this.interestsRate;
-      startDate = new Date("01/01/" + endYear + "00:00:00");
-    }
 
+      startDate = new Date("01/01/" + endYear + " 00:00:00");
+    }
     const daysInYear: number = Math.ceil(
       (new Date("12/31/" + endYear + " 23:59:59").getTime() -
         new Date("01/01/" + startYear + " 00:00:00").getTime()) /
@@ -72,6 +70,7 @@ export class debt {
       interests: 0,
       operationalCosts: this.operationalCosts
     };
+
     if (typeof this.payments === "undefined") {
       debtStats.interests = this.getInterests4DayExcludesPayments(date);
       debtStats.date = date;
@@ -82,6 +81,7 @@ export class debt {
           payment.date,
           debtStats.date
         );
+        console.log(debtStats.interests);
         debtStats.date = payment.date;
         debtStats.operationalCosts -= payment.amount;
         if (debtStats.operationalCosts < 0) {
