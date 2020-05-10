@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import Provision from "./components/provision/provision";
+import Provisions from "./components/provisions/provisions";
 import Payments from "./components/payments/payments";
 import Summary from "./components/summary/summary";
 import Details from "./components/details/details";
@@ -9,6 +9,8 @@ import {
   // editPayment,
   removePayment,
   editNewPayment,
+  removeProvision,
+  addProvision,
   editProvisionData,
   toggleDetails
 } from "./store/actions";
@@ -50,22 +52,21 @@ function App(props: any) {
   ];
 
   const summaryCalculator = new debt({
-    startDate: props.provisionData.startDate,
-    debt: props.provisionData.debt,
-    interestsRate: props.provisionData.interests,
-    operationalCosts: props.provisionData.operationalCosts,
+    startDate: props.newProvision.startDate,
+    debt: props.newProvision.debt,
+    interestsRate: props.newProvision.interests,
+    operationalCosts: props.newProvision.operationalCosts,
     payments: props.payments
   });
   return (
     <div style={rootStyle} className="content-section p-grid p-justify-center">
-      <Provision
-        startDate={props.provisionData.startDate}
-        endDate={props.provisionData.endDate}
-        debt={props.provisionData.debt}
-        costs={props.provisionData.operationalCosts}
-        interests={props.provisionData.interests}
+      <Provisions
+        provisions={props.provisions}
+        newProvision={props.newProvision}
         onChange={props.editProvision}
         panelStyle={panelStyle}
+        removeProvision={props.removeProvision}
+        addProvision={props.addProvision}
       />
 
       <Payments
@@ -80,7 +81,7 @@ function App(props: any) {
       <Summary
         panelStyle={panelStyle}
         toggleDetails={props.toggleDetails}
-        data={summaryCalculator.getDebt4Date(props.provisionData.endDate)}
+        data={summaryCalculator.getDebt4Date(props.newProvision.endDate)}
       />
 
       {props.controlData.showDetails && (
@@ -96,13 +97,16 @@ const mapDispatchToProps = (dispatch: (...args: any[]) => void) => ({
     dispatch(editProvisionData(provision)),
   addPayment: (payment: IPayment) => dispatch(addPayment(payment)),
   editNewPayment: (payment: IPayment) => dispatch(editNewPayment(payment)),
-  removePayment: (id: string) => dispatch(removePayment(id))
+  removePayment: (id: string) => dispatch(removePayment(id)),
+  addProvision: (provision: IProvision) => dispatch(addProvision(provision)),
+  removeProvision: (id: string) => dispatch(removeProvision(id))
 });
 
 const mapStateToProps = (state: any) => ({
   ...state,
   payments: [...state.payments],
-  provisionData: { ...state.provisionData },
+  provisions: [ ...state.provisions],
+  newProvision: { ...state.newProvision},
   controlData: { ...state.controlData }
 });
 

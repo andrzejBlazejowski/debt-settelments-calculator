@@ -81,7 +81,6 @@ export class debt {
           payment.date,
           debtStats.date
         );
-        console.log(debtStats.interests);
         debtStats.date = payment.date;
         debtStats.operationalCosts -= payment.amount;
         if (debtStats.operationalCosts < 0) {

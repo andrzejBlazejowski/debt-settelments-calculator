@@ -4,7 +4,8 @@ import {
   EDIT_PAYMENT,
   TOGGLE_DETAILS,
   EDIT_PROVISIONS_DATA,
-  EDIT_NEW_PAYMENT
+  EDIT_NEW_PAYMENT,
+  ADD_PROVISION
 } from "./actions";
 import { IPayment, IProvision, IAppState } from "./interfaces";
 import { getUniquePaymentId } from "./../utils/idGenerator";
@@ -28,13 +29,28 @@ const initialState: IAppState = {
     date: new Date(),
     amount: "0"
   },
-  provisionData: {
+  newProvision: {
     startDate: new Date("03/01/2019"),
     endDate: new Date("03/31/2020"),
     debt: "100",
     interests: "10",
     operationalCosts: "20"
   },
+  provisions: [{
+    startDate: new Date("03/01/2019"),
+    endDate: new Date("03/31/2020"),
+    debt: "100",
+    interests: "10",
+    operationalCosts: "20",
+    id: "`sdascds454d123"
+  },{
+    startDate: new Date("03/01/2019"),
+    endDate: new Date("03/31/2020"),
+    debt: "100",
+    interests: "10",
+    operationalCosts: "20",
+    id: "`sdasd123"
+  },],
   controlData: {
     showDetails: false
   }
@@ -46,7 +62,7 @@ function debtSettlements(
     type: string;
     id?: string;
     payment?: IPayment;
-    provision: IProvision;
+    provision?: IProvision;
   }
 ): IAppState {
   switch (action.type) {
@@ -60,12 +76,36 @@ function debtSettlements(
       return {
         debts: [...state.debts],
         payments: [...state.payments, nextPayment],
-        provisionData: { ...state.provisionData },
+        provisions: [ ...state.provisions ],
+        newProvision: { ...state.newProvision },
         controlData: { ...state.controlData },
         newPayment: {
           date: new Date(),
           amount: "0"
         }
+      };
+    }
+    case ADD_PROVISION: {
+      let nextProvision: IProvision = { id: "" };
+      const id = getUniquePaymentId(state.provisions);
+      console.log(id);
+      if (typeof action.provision !== "undefined") {
+        nextProvision = action.provision;
+      }
+      nextProvision.id = id;
+      return {
+        debts: [...state.debts],
+        payments: [...state.payments],
+        provisions: [ ...state.provisions, nextProvision ],
+        newProvision: { 
+          startDate: new Date(),
+          endDate: new Date(),
+          operationalCosts: "20",
+          debt: "100",
+          interests: "10"
+         },
+        controlData: { ...state.controlData },
+        newPayment: { ...state.newPayment }
       };
     }
     case REMOVE_PAYMENT: {
@@ -74,7 +114,8 @@ function debtSettlements(
         payments: [
           ...state.payments.filter(payment => payment.id !== action.id)
         ],
-        provisionData: { ...state.provisionData },
+        provisions: [ ...state.provisions ],
+        newProvision: { ...state.newProvision },
         controlData: { ...state.controlData },
         newPayment: { ...state.newPayment }
       };
@@ -93,7 +134,8 @@ function debtSettlements(
               : { ...payment, ...nextPayment }
           )
         ],
-        provisionData: { ...state.provisionData },
+        provisions: [ ...state.provisions ],
+        newProvision: { ...state.newProvision },
         controlData: { ...state.controlData },
         newPayment: { ...state.newPayment }
       };
@@ -106,7 +148,8 @@ function debtSettlements(
       return {
         debts: [...state.debts],
         payments: [...state.payments],
-        provisionData: { ...state.provisionData },
+        provisions: [ ...state.provisions ],
+        newProvision: { ...state.newProvision },
         controlData: { ...state.controlData },
         newPayment: { ...state.newPayment, ...nextPayment }
       };
@@ -115,7 +158,8 @@ function debtSettlements(
       return {
         debts: [...state.debts],
         payments: [...state.payments],
-        provisionData: { ...state.provisionData },
+        provisions: [ ...state.provisions ],
+        newProvision: { ...state.newProvision },
         controlData: {
           ...state.controlData,
           showDetails: !state.controlData.showDetails
@@ -124,10 +168,12 @@ function debtSettlements(
       };
     }
     case EDIT_PROVISIONS_DATA: {
+      console.log(action);
       return {
         debts: [...state.debts],
         payments: [...state.payments],
-        provisionData: { ...state.provisionData, ...action.provision },
+        provisions: [ ...state.provisions ],
+        newProvision: { ...state.newProvision, ...action.provision },
         controlData: { ...state.controlData },
         newPayment: { ...state.newPayment }
       };

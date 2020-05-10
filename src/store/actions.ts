@@ -8,12 +8,21 @@ export const EDIT_NEW_PAYMENT = "EDIT_NEW_PAYMENT";
 
 export const TOGGLE_DETAILS = "TOGGLE_DETAILS";
 
+export const ADD_PROVISION = "ADD_PROVISION";
+export const REMOVE_PROVISION = "REMOVE_PROVISION";
 export const EDIT_PROVISIONS_DATA = "EDIT_PROVISIONS_DATA";
 
 export function addPayment(payment: IPayment) {
   return {
     type: ADD_PAYMENT,
     payment: payment
+  };
+}
+
+export function addProvision(provision: IProvision) {
+  return {
+    type: ADD_PROVISION,
+    provision: provision
   };
 }
 
@@ -56,6 +65,14 @@ export function clearNewPayment() {
 export function toggleDetails() {
   return {
     type: TOGGLE_DETAILS
+  };
+}
+
+
+export function removeProvision(provisionId: string) {
+  return {
+    type: REMOVE_PROVISION,
+    id: provisionId
   };
 }
 

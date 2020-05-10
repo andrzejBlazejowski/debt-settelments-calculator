@@ -15,7 +15,9 @@ export interface IDebt {
 }
 
 export interface IProvision {
+  id?: string;
   startDate?: Date;
+  startDateString?: string;
   endDate?: Date;
   debt?: string;
   interests?: string;
@@ -26,6 +28,7 @@ export interface IAppState {
   payments: IPayment[];
   newPayment: IPayment;
   debts: IDebt[];
-  provisionData: IProvision;
+  provisions: IProvision[];
+  newProvision: IProvision;
   controlData: any;
 }
